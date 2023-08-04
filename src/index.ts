@@ -1,3 +1,2 @@
-import runner from './runner';
-
-export default runner;
+import runner from "./runner";
+runner();

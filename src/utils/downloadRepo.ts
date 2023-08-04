@@ -1,6 +1,11 @@
 import { loading } from "./loading";
-import { downloadGitRepo } from "../const";
-import { DownloadRepoParams } from "../types";
+import { downloadGitRepo, RepoURL, TemplateRepoType } from "../const";
+
+export type DownloadRepoParams = {
+  repoURL: RepoURL<TemplateRepoType>;
+  projectName: string;
+  targetDirectory: string;
+};
 
 /**
  * 下载仓库
@@ -16,7 +21,14 @@ export const downloadRepo = async ({
   await loading(
     "正在下载模板，请稍后...",
     () =>
-      downloadGitRepo(`direct:${repoURL}`, targetDirectory, { clone: true }),
-    { projectName }
+      downloadGitRepo(
+        `direct:${repoURL}`,
+        targetDirectory,
+        { clone: true },
+        (err: any) => {
+          console.log(err);
+        }
+      ),
+    projectName
   );
 };

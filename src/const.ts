@@ -1,49 +1,42 @@
-/**
- * 静态变量
- * @author xiwenge <1825744594@qq.com>
- * @create 2023/06/25
- */
 import fs from "fs-extra";
 import path from "path";
 import util from "util";
 import download from "download-git-repo";
-import { RepoURLTag, RepoURLTagValues, RepoURL } from "./types";
+export type ValuesToUnion<T> = {
+  [P in keyof T]: T[P];
+}[keyof T];
 
 /** 当前根目录 */
 export const ROOT_DIR = path.resolve(__dirname, "../");
 
 const { version } = fs.readJSONSync(path.resolve(ROOT_DIR, "package.json"));
 
-/** https://tooltt.com/art-ascii/ font: ANSI Shadow */
+/** https://tooltt.com/art-ascii/ */
 export const BRAND_LOGO = `
-  ██╗  ██╗██╗    ██╗ ██████╗      ██████╗██╗     ██╗
-  ╚██╗██╔╝██║    ██║██╔════╝     ██╔════╝██║     ██║
-  ╚███╔╝ ██║ █╗ ██║██║  ███╗    ██║     ██║     ██║
-  ██╔██╗ ██║███╗██║██║   ██║    ██║     ██║     ██║
-  ██╔╝ ██╗╚███╔███╔╝╚██████╔╝    ╚██████╗███████╗██║
-  ╚═╝  ╚═╝ ╚══╝╚══╝  ╚═════╝      ╚═════╝╚══════╝╚═╝
+░█▀█░█▀█░█▀▀░█▀▀░█░░░█░█░█▀▀░█▀█░█▀▀░▀█▀
+░█▀█░█░█░█░█░█▀▀░█░░░░█░░█▀▀░█▀█░▀▀█░░█░
+░▀░▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀░▀▀▀░░▀░
 `;
 
 /** 当前版本号 */
 export const VERSION = version;
 
-export const getRepoURL = (tag: RepoURLTag): RepoURL<RepoURLTag> => {
-  return `https://gitee.com/redstone-1/${tag}.git`;
+export const templateMap = {
+  microApp: "vue-template-angel",
+  react: "react-template",
+  uniapp: "uniapp",
+  nest: "nest",
+  library: "library",
+} as const;
+export type TemplateMap = typeof templateMap;
+export type TemplateType = keyof TemplateMap;
+export type TemplateRepoType = ValuesToUnion<TemplateMap>;
+export type RepoURL<T extends string> = `https://github.com/xywc-s/${T}.git`;
+
+export const getRepoURL = (
+  tag: TemplateRepoType
+): RepoURL<TemplateRepoType> => {
+  return `https://github.com/xywc-s/${tag}.git`;
 };
 
 export const downloadGitRepo = util.promisify(download);
-
-export const repoURLTag: RepoURLTagValues = {
-  vueTemplate: "vue-template",
-  vueTemplateTypescript: "vue-template-typescript",
-  reactTemplate: "react-template",
-  reactTemplateTypescript: "react-template-typescript",
-  uniappVue2: "uniapp-vue2",
-  uniappVue2Uview: "uniapp-vue2-uview",
-  uniappVue3: "uniapp-vue3",
-  uniappVue3Typescript: "uniapp-vue3-typescript",
-  koa: "koa",
-  nest: "nest",
-  library: "library",
-  libraryTypescript: "library-typescript",
-};

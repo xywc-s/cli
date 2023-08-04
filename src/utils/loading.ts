@@ -1,6 +1,5 @@
 import ora from "ora";
 import chalk from "chalk";
-import { LoadingOther } from "../types";
 
 /**
  * 睡眠函数
@@ -24,21 +23,20 @@ const sleep = (delay: number) => {
 export const loading = async (
   message: string,
   callback: () => any,
-  other: LoadingOther
+  projectName: string
 ): Promise<any> => {
   const spinner = ora(message);
   spinner.start(); // 开启加载
   try {
     const res = await callback();
+    console.log({ res });
+
     // 加载成功
     spinner.succeed(
       `${chalk.black.bold("下载成功！执行以下命令打开并运行项目:")}
-      \r\n  ${chalk.gray.bold(`cd ${other?.projectName}`)}
+      \r\n  ${chalk.gray.bold(`cd ${projectName}`)}
       \r\n  ${chalk.gray.bold("npm install")}
       \r\n  ${chalk.gray.bold("npm run dev")}
-      \r\n  ${chalk.gray.bold(
-        "问题、意见、建议请反馈至：https://github.com/Redstone-1/xwg-cli/issues"
-      )}
       `
     );
     return res;
@@ -47,6 +45,6 @@ export const loading = async (
     spinner.fail("请求失败，正在重试...");
     await sleep(1000);
     // 重新拉取
-    return loading(message, callback, other);
+    return loading(message, callback, projectName);
   }
 };
