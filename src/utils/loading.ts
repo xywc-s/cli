@@ -1,17 +1,6 @@
-import ora from "ora";
-import chalk from "chalk";
-
-/**
- * 睡眠函数
- * @param {Number} delay 睡眠时间
- */
-const sleep = (delay: number) => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve(false);
-    }, delay);
-  });
-};
+import ora from 'ora'
+import chalk from 'chalk'
+import sleep from './sleep'
 
 /**
  * 加载中方法
@@ -25,26 +14,24 @@ export const loading = async (
   callback: () => any,
   projectName: string
 ): Promise<any> => {
-  const spinner = ora(message);
-  spinner.start(); // 开启加载
+  const spinner = ora(message)
+  spinner.start() // 开启加载
   try {
-    const res = await callback();
-    console.log({ res });
+    await callback()
 
     // 加载成功
     spinner.succeed(
-      `${chalk.black.bold("下载成功！执行以下命令打开并运行项目:")}
+      `${chalk.green.bold('下载成功！执行以下命令打开并运行项目:')}
       \r\n  ${chalk.gray.bold(`cd ${projectName}`)}
-      \r\n  ${chalk.gray.bold("npm install")}
-      \r\n  ${chalk.gray.bold("npm run dev")}
+      \r\n  ${chalk.gray.bold('npm install')}
+      \r\n  ${chalk.gray.bold('npm run dev')}
       `
-    );
-    return res;
+    )
   } catch (error) {
     // 加载失败
-    spinner.fail("请求失败，正在重试...");
-    await sleep(1000);
+    spinner.fail('请求失败，正在重试...')
+    await sleep(1000)
     // 重新拉取
-    return loading(message, callback, projectName);
+    return loading(message, callback, projectName)
   }
-};
+}
