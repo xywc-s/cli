@@ -25,5 +25,6 @@ type PromptListItem = {
 }
 
 export default async (prompts: PromptListItem[]) => {
-  return await new Inquirer.prompt(prompts) // eslint-disable-line
+  // eslint-disable-next-line new-cap
+  return await new Inquirer.prompt(prompts)
 }

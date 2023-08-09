@@ -19,7 +19,7 @@ const bootstrap = () => {
   program
     .command('new <project-name>')
     .alias('n')
-    .description(chalk.cyan('创建新项目'))
+    .description('创建新项目')
     .option(
       '-f, --force',
       chalk.red(
@@ -28,12 +28,12 @@ const bootstrap = () => {
     )
     .action(create)
 
-  program.command('help [command]').description(chalk.cyan('显示帮助信息'))
+  program.command('help [command]').description('显示帮助信息')
 
   program.on('--help', function () {
     console.log(`\r\n终端执行 ${chalk.cyan.bold('angel <command> --help')} 获取更多命令详情\r\n`)
   })
 
-  program.parse(process.argv)
+  program.parseAsync(process.argv)
 }
 bootstrap()
