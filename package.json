@@ -13,7 +13,6 @@
   "scripts": {
     "dev": "nodemon",
     "build": "rm -rf lib && tsc --outDir lib --module CommonJS",
-    "lint": "eslint . --ext '.js,.ts' --fix",
     "angel": "angel"
   },
   "files": [
